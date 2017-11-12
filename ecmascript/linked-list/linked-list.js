@@ -30,12 +30,16 @@ class LinkedList {
     } else {
       let currentNode = this.base
       while (currentNode.next) {
+        if (currentNode.next.next === undefined) {
+          break
+        }
         currentNode = currentNode.next
       }
-      currentNode.prev.next = undefined
+      let currentData = currentNode.next.data
+      currentNode.next = undefined
       this.length -= 1
 
-      return currentNode.data
+      return currentData
     }
   }
 
@@ -51,6 +55,7 @@ class LinkedList {
       this._length -= 1
       return baseCopy.data
     }
+
   }
 
   unshift (val) {
@@ -60,9 +65,29 @@ class LinkedList {
       this._length = 1
     } else {
       let baseCopy = this.base
+      newNode.next = this.base
       this.base = newNode
       this._length += 1
     }
+  }
+
+  delete (val) {
+    let currentNode = this.base
+    if (this.base.next === undefined && this.base.data === val) {
+      this.base = undefined
+      this._length = 0
+    }
+    while (currentNode.next) {
+      if (currentNode.data === val) {
+        currentNode.prev = currentNode.next
+        this._length -= 1
+      }
+      currentNode = currentNode.next
+    }
+  }
+
+  count () {
+    return this._length
   }
 }
 
